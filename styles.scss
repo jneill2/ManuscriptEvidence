@@ -65,13 +65,13 @@ details[open] {
 
 .mss-block {
     padding: 20px;
-    margin-bottom: 30px;
+    // margin-bottom: 30px;
     .graph {
-        padding: 5px 2px 15px 2px;
+        padding: 5px 2px 30px 2px;
         slide-indicator {
             width: 0px;
             opacity: 0;
-            transition: opacity 500ms ease-in-out;
+            transition: opacity 600ms ease-in-out;
         }
     
         &:hover slide-indicator {
@@ -88,6 +88,7 @@ details[open] {
     }
 }
 .timeline {
+    touch-action: none;
     margin: 30px -1px;
     height: 10px;
     background: lightgray;
