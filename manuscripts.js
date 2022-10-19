@@ -13,7 +13,7 @@ window.manuscripts = [
         name: 'New Testament',
         summary: '',
         date: 70,
-        qty: 5000,
+        qty: 5386,
         range: [117, 1565]
     },
     {

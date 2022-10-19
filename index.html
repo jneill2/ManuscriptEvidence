@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <div id="app" x-data="{manuscripts: window.manuscripts, range:[-1000, 2000], pointer:'', settings:false }">
+    <div id="app" x-data="{manuscripts: window.manuscripts, range:[-1000, 2000], settings:false }">
         <div>
             <button @click.outside="settings=false" @click="settings = !settings">
                 <iconify-icon icon="ic:round-menu"></iconify-icon>
@@ -52,12 +52,14 @@
                     <p x-text="work.summary"></p>
                 </details>
 
-                <div class="graph" x-data="{pointerDate:''}" x-init="spread=range[1]-range[0]"
-                    @mousemove="(ev) => {
+                <div class="graph" x-data="pointController" x-init="spread=range[1]-range[0]"
+                    @mousemove="(ev) => pointMove(ev, $el, range)"
+                    @touchmove.passive="(ev) => pointMove(ev.touches[0], $el, range)"
+                    >
+                    <!-- {
                         pointer = {width:(ev.clientX-$el.offsetLeft)-1+'px'};
                         pointerDate = Math.ceil(((ev.clientX-$el.offsetLeft)/$el.clientWidth*spread + range[0])/5)*5;
-                    }"
-                    >
+                    } -->
                     <div class="timeline">
     
                         <div class="mark written" 
@@ -67,8 +69,9 @@
     
                         <div class="mark mss-date-range" 
                             :style="{marginLeft: ((work.range[0]-range[0])/spread)*100+'%', width: ((work.range[1]-work.range[0])/spread)*100+'%' }"
-                            :data-note="work.qty +' mss from '+ work.range[0]+'AD to '+ work.range[1]+'AD'"
+                            :data-note="work.qty +' manuscripts'" 
                         ></div>
+                        <!--  from '+ work.range[0]+'AD to '+ work.range[1]+'AD -->
     
                         <div x-show="$store.centuryMarks.on">
                             <template x-for="seg in spread/100">
@@ -97,6 +100,14 @@
                     this.on = !this.on
                 }
             })
+            Alpine.data('pointController', (ev) => ({
+                pointerDate: '',
+                pointer: '',
+                pointMove(ev, el, range) {
+                    this.pointer = { width: (ev.clientX - el.offsetLeft) - 1 + 'px' };
+                    this.pointerDate = Math.ceil(((ev.clientX - el.offsetLeft) / el.clientWidth * spread + range[0]) / 5) * 5;
+                }
+            }))
         })
     </script>
 
