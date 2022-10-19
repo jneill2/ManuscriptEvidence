@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+}
+[x-cloak] {
+    display: none;
+}
+
+#app {
+    max-width: 850px;
+    margin: auto;
+}
+iconify-icon {
+    font-size: 2em;
+    vertical-align: middle;
+}
+@media (max-width: 600px) {
+    button > span {
+        display: none;
+    }
+}
+.settings {
+    position: absolute;
+    background: white;
+    box-shadow: grey 0px 0px 5px -2px;
+    border-radius: 3px;
+}
+
+button {
+    border: none;
+    padding: 0.6em 0.9em;
+    margin: 2px;
+    background: inherit;
+    border-radius: 5px;
+    &:hover {
+        background: #eee;
+    }
+}
+
+h2 {
+    display: inline-block;
+    vertical-align: middle
+}
+details {
+    summary {
+        margin-bottom: -10px;
+        transition: margin 150ms ease-out;
+    }
+}
+details[open] {
+    margin-bottom: 50px;
+    summary {
+        margin-bottom: 10px;
+    }
+}
+
+@mixin indicator-text($content:'', $align:right, $placement:-15px) {
+    content: $content;
+    display: block;
+    font-size: 0.6em;
+    white-space: nowrap;
+    text-align: $align;
+    margin: $placement;
+}
+
+.mss-block {
+    padding: 20px;
+    margin-bottom: 30px;
+    .graph {
+        padding: 5px 2px 15px 2px;
+        slide-indicator {
+            width: 0px;
+            opacity: 0;
+            transition: opacity 500ms ease-in-out;
+        }
+    
+        &:hover slide-indicator {
+            opacity: 1;
+            height: 30px;
+            display: block;
+            position: absolute;
+            border-right: 1px solid black;
+            margin: -5px 0px;
+            &::after {
+                @include indicator-text($content: attr(data-date), $placement: 33px -13px)
+            }
+        }
+    }
+}
+.timeline {
+    margin: 30px -1px;
+    height: 10px;
+    background: lightgray;
+    position: relative;
+    .mark {
+        position: absolute;
+        display: block;
+        margin: 0px -1px;
+    }
+    .mss-date-range {
+        height: 20px;
+        background: rgba(000, 000, 000, 0.3);
+        margin: -5px 0px;
+        border-radius: 5px;
+        &::before {
+            @include indicator-text(
+                $content:attr(data-note), 
+                $align:center, 
+            )
+        }
+    }
+    .written {
+        border-right: 2px solid red;
+        height: 20px;
+        margin: -5px -2px;
+        &::before {
+            @include indicator-text($content: attr(data-date))
+        }
+    }
+    century-mark {
+        border-right: 1px solid black;
+        height: 3px;
+        &:last-of-type {
+            width: calc(100% - 1px);
+            border-left: 1px solid black;
+        }
+        &.century {
+            height: 10px;
+        }
+        &.half-century {
+            height: 6px;
+        }
+    }
+}

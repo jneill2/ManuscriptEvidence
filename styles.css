@@ -1,0 +1,142 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  user-select: none;
+}
+
+[x-cloak] {
+  display: none;
+}
+
+#app {
+  max-width: 850px;
+  margin: auto;
+}
+
+iconify-icon {
+  font-size: 2em;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  button > span {
+    display: none;
+  }
+}
+.settings {
+  position: absolute;
+  background: white;
+  box-shadow: grey 0px 0px 5px -2px;
+  border-radius: 3px;
+}
+
+button {
+  border: none;
+  padding: 0.6em 0.9em;
+  margin: 2px;
+  background: inherit;
+  border-radius: 5px;
+}
+button:hover {
+  background: #eee;
+}
+
+h2 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+details summary {
+  margin-bottom: -10px;
+  transition: margin 150ms ease-out;
+}
+
+details[open] {
+  margin-bottom: 50px;
+}
+details[open] summary {
+  margin-bottom: 10px;
+}
+
+.mss-block {
+  padding: 20px;
+  margin-bottom: 30px;
+}
+.mss-block .graph {
+  padding: 5px 2px 15px 2px;
+}
+.mss-block .graph slide-indicator {
+  width: 0px;
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+}
+.mss-block .graph:hover slide-indicator {
+  opacity: 1;
+  height: 30px;
+  display: block;
+  position: absolute;
+  border-right: 1px solid black;
+  margin: -5px 0px;
+}
+.mss-block .graph:hover slide-indicator::after {
+  content: attr(data-date);
+  display: block;
+  font-size: 0.6em;
+  white-space: nowrap;
+  text-align: right;
+  margin: 33px -13px;
+}
+
+.timeline {
+  margin: 30px -1px;
+  height: 10px;
+  background: lightgray;
+  position: relative;
+}
+.timeline .mark {
+  position: absolute;
+  display: block;
+  margin: 0px -1px;
+}
+.timeline .mss-date-range {
+  height: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  margin: -5px 0px;
+  border-radius: 5px;
+}
+.timeline .mss-date-range::before {
+  content: attr(data-note);
+  display: block;
+  font-size: 0.6em;
+  white-space: nowrap;
+  text-align: center;
+  margin: -15px;
+}
+.timeline .written {
+  border-right: 2px solid red;
+  height: 20px;
+  margin: -5px -2px;
+}
+.timeline .written::before {
+  content: attr(data-date);
+  display: block;
+  font-size: 0.6em;
+  white-space: nowrap;
+  text-align: right;
+  margin: -15px;
+}
+.timeline century-mark {
+  border-right: 1px solid black;
+  height: 3px;
+}
+.timeline century-mark:last-of-type {
+  width: calc(100% - 1px);
+  border-left: 1px solid black;
+}
+.timeline century-mark.century {
+  height: 10px;
+}
+.timeline century-mark.half-century {
+  height: 6px;
+}
+
+/*# sourceMappingURL=styles.css.map */
