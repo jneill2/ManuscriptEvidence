@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.1/iconify-icon.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="manuscripts.js"></script>
+</head>
+
+<body>
+
+    <div id="app" x-data="{manuscripts: window.manuscripts, range:[-1000, 2000], settings:false }">
+
+        <template x-for="work in manuscripts">
+            <div style="margin: 10px 0px 20px 0px;">
+                <span x-text="work.name"></span>
+                <div class="bar-graph" x-data="{elapsed: work.range[0]-work.date, spread:range[1]-range[0]}">
+                    <div style="height:10px; background: grey;"></div>
+                    <div :style="{width: elapsed/spread*100+'%'}" style="height:10px; background: red;"></div>
+                </div>
+            </div>
+        </template>
+
+    </div>
+
+</body>
+</html>

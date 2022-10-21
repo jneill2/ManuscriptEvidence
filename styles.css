@@ -1,15 +1,11 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 [x-cloak] {
   display: none;
-}
-
-#app {
-  max-width: 850px;
-  margin: auto;
 }
 
 iconify-icon {
@@ -22,6 +18,11 @@ iconify-icon {
     display: none;
   }
 }
+#app {
+  max-width: 850px;
+  margin: auto;
+}
+
 .settings {
   position: absolute;
   background: white;
@@ -43,15 +44,23 @@ button:hover {
 h2 {
   display: inline-block;
   vertical-align: middle;
+  margin: 15px 0px;
+}
+
+ul {
+  margin: 0px;
 }
 
 details summary {
   margin-bottom: -10px;
   transition: margin 150ms ease-out;
 }
+details summary ~ * {
+  color: #444;
+}
 
 details[open] {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 details[open] summary {
   margin-bottom: 10px;

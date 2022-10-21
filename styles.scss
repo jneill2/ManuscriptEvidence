@@ -1,15 +1,12 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     user-select: none;
+    -webkit-user-select: none;
 }
 [x-cloak] {
     display: none;
 }
 
-#app {
-    max-width: 850px;
-    margin: auto;
-}
 iconify-icon {
     font-size: 2em;
     vertical-align: middle;
@@ -18,6 +15,11 @@ iconify-icon {
     button > span {
         display: none;
     }
+}
+
+#app {
+    max-width: 850px;
+    margin: auto;
 }
 .settings {
     position: absolute;
@@ -39,16 +41,23 @@ button {
 
 h2 {
     display: inline-block;
-    vertical-align: middle
+    vertical-align: middle;
+    margin: 15px 0px;
+}
+ul {
+    margin: 0px;
 }
 details {
     summary {
         margin-bottom: -10px;
         transition: margin 150ms ease-out;
+        & ~ * {
+            color: #444;
+        }
     }
 }
 details[open] {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     summary {
         margin-bottom: 10px;
     }
@@ -65,7 +74,6 @@ details[open] {
 
 .mss-block {
     padding: 20px;
-    // margin-bottom: 30px;
     .graph {
         padding: 5px 2px 30px 2px;
         slide-indicator {
@@ -73,7 +81,6 @@ details[open] {
             opacity: 0;
             transition: opacity 600ms ease-in-out;
         }
-    
         &:hover slide-indicator {
             opacity: 1;
             height: 30px;

@@ -48,8 +48,11 @@
                     <summary>
                         <h2 x-text="work.name"></h2>
                     </summary>
-                    <div>Date: <span x-text="work.date > 0 ? work.date+'AD' : -work.date+'BC'"></span></div>
-                    <p x-text="work.summary"></p>
+                    <ul>
+                        <li>Date of autograph: circa <span x-text="work.date > 0 ? work.date+'AD' : -work.date+'BC'"></span></li>
+                        <li>Elapsed time between authorship and earliest manuscript: <span x-text="work.range[0]-work.date+' years'"></span></li>
+                    </ul>
+                    <p x-html="work.summary"></p>
                 </details>
 
                 <div class="graph" x-data="pointController" x-init="spread=range[1]-range[0]"
