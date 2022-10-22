@@ -72,7 +72,7 @@ details[open] {
     margin: $placement;
 }
 
-.mss-block {
+.block {
     padding: 20px;
     .graph {
         padding: 5px 2px 30px 2px;
@@ -83,13 +83,13 @@ details[open] {
         }
         &:hover slide-indicator {
             opacity: 1;
-            height: 30px;
+            height: 45px;
             display: block;
             position: absolute;
             border-right: 1px solid black;
             margin: -5px 0px;
             &::after {
-                @include indicator-text($content: attr(data-date), $placement: 33px -13px)
+                @include indicator-text($content: attr(data-date), $placement: 53px -13px)
             }
         }
     }
@@ -111,8 +111,10 @@ details[open] {
         margin: -5px 0px;
         border-radius: 5px;
         &::before {
-            @include indicator-text(
-                $content:attr(data-note), $align:center)
+            @include indicator-text($content:attr(data-manuscript-info), $align:left, $placement: -15px 10px);
+        }
+        &::after {
+            @include indicator-text($content:attr(data-fragment-info), $align:left, $placement:40px 10px);
         }
     }
     .written {

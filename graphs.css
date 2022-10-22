@@ -156,4 +156,74 @@ details[open] summary {
   height: 6px;
 }
 
-/*# sourceMappingURL=styles.css.map */
+.block {
+  margin: 50px 0px;
+  box-shadow: -5px 5px 12px -10px grey;
+  padding: 20px;
+  border-radius: 7px;
+}
+.block:hover {
+  box-shadow: 0px 0px 15px -7px grey;
+  transition: box-shadow 250ms;
+}
+
+.bar-graph {
+  position: relative;
+  height: 50px;
+  margin: 10px 0px;
+}
+.bar-graph div.bar {
+  margin: 20px 0px;
+  height: 10px;
+  position: absolute;
+}
+.bar-graph div.bar:hover {
+  padding: 1px;
+  transition: padding 250ms ease-in-out;
+}
+.bar-graph .first-manuscript {
+  background: rgba(0, 0, 255, 0.5);
+}
+.bar-graph .first-manuscript::after {
+  content: attr(data-note);
+  display: block;
+  font-size: 0.6em;
+  white-space: nowrap;
+  text-align: right;
+  margin: 15px 0px;
+}
+.bar-graph .first-fragment {
+  background: rgba(255, 0, 0, 0.5);
+}
+.bar-graph .first-fragment::after {
+  content: attr(data-note);
+  display: block;
+  font-size: 0.6em;
+  white-space: nowrap;
+  text-align: left;
+  margin: -15px 0px;
+}
+.bar-graph .mss-count {
+  background: rgba(0, 0, 255, 0.5);
+}
+.bar-graph .mss-count::after {
+  content: attr(data-note);
+  display: block;
+  font-size: 0.6em;
+  white-space: nowrap;
+  text-align: right;
+  margin: -15px 0px;
+}
+.bar-graph .fragment-count {
+  background: rgba(255, 0, 0, 0.5);
+}
+.bar-graph .fragment-count::after {
+  content: attr(data-note);
+  display: block;
+  font-size: 0.6em;
+  white-space: nowrap;
+  text-align: left;
+  margin: 15px 0px;
+}
+
+/*# sourceMappingURL=graphs.css.map */

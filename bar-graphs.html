@@ -4,7 +4,7 @@
 <head>
     <title>Timeline</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="graphs.css" />
     <script src="https://code.iconify.design/iconify-icon/1.0.1/iconify-icon.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="manuscripts.js"></script>
@@ -12,19 +12,120 @@
 
 <body>
 
-    <div id="app" x-data="{manuscripts: window.manuscripts, range:[-1000, 2000], settings:false }">
-
-        <template x-for="work in manuscripts">
-            <div style="margin: 10px 0px 20px 0px;">
-                <span x-text="work.name"></span>
-                <div class="bar-graph" x-data="{elapsed: work.range[0]-work.date, spread:range[1]-range[0]}">
-                    <div style="height:10px; background: grey;"></div>
-                    <div :style="{width: elapsed/spread*100+'%'}" style="height:10px; background: red;"></div>
-                </div>
+    <div id="app" x-data="{manuscripts: window.manuscripts, range:[-1000, 2000], settings:false}">
+        <div>
+            <button @click="manuscripts.reverse()">
+                <iconify-icon icon="ic:round-swap-vert"></iconify-icon>
+                <span>Reverse order</span>
+            </button>
+            <div style="float: right;">
+                <button @click="manuscripts.sort((a,b) => b.qty-a.qty)">
+                    <iconify-icon icon="ic:baseline-123"></iconify-icon>
+                    <span>By quantity</span>
+                </button>
+                <button @click="manuscripts.sort((a,b) => b.date-a.date)">
+                    <iconify-icon icon="ic:baseline-date-range"></iconify-icon>
+                    <span>By date</span>
+                </button>
+                <button @click="manuscripts.sort((a,b) => (a.earliest.manuscript-a.date)-(b.earliest.manuscript-b.date))">
+                    <iconify-icon icon="ic:round-access-time"></iconify-icon>
+                    <span>By 1st ms</span>
+                </button>
             </div>
-        </template>
+        </div>
+
+        <hr>
+
+        <div x-data="{
+            time_spread:getTimeSpread(manuscripts),
+            count_spread:getCountSpread(manuscripts),
+        }">
+            <template x-for="work in manuscripts">
+                <div class="block">
+                    <details style="font-size: small;">
+                        <summary>
+                            <h2 x-text="work.name"></h2>
+                        </summary>
+                        <ul>
+                            <li>Date of autograph: circa <span x-text="work.date > 0 ? work.date+'AD' : -work.date+'BC'"></span></li>
+                            <li x-show="work.earliest.fragment">Elapsed time between authorship and earliest fragment: <span
+                                    x-text="work.earliest.fragment-work.date+' years'"></span></li>
+                            <li>Elapsed time between authorship and earliest manuscript: <span
+                                    x-text="work.earliest.manuscript-work.date+' years'"></span></li>
+                        </ul>
+                        <p x-html="work.summary"></p>
+                    </details>
+                    <div class="bar-graph">
+                        <div x-show="work.earliest.manuscript" class="bar first-manuscript" :data-note="work.earliest.manuscript-work.date + ' years until first manuscript'" :style="{width: (work.earliest.manuscript-work.date)/time_spread*100+'%'}"></div>
+                        <div x-show="work.earliest.fragment" class="bar first-fragment" :data-note="work.earliest.fragment-work.date + ' years until first fragment'" :style="{width: (work.earliest.fragment-work.date)/time_spread*100+'%'}"></div>
+                    </div>
+                    <div class="bar-graph">
+                        <div x-show="work.quantity.manuscripts" class="bar mss-count" :data-note="work.quantity.manuscripts + ' manuscripts'" :style="{width: (work.quantity.manuscripts)/count_spread*100+'%'}"></div>
+                        <div x-show="work.quantity.fragments" class="bar fragment-count" :data-note="work.quantity.fragments + ' fragments'" :style="{width: (work.quantity.fragments)/count_spread*100+'%'}"></div>
+                    </div>
+                    <div class="graph" x-data="pointController" x-init="spread=range[1]-range[0]"
+                        @mousemove="(ev) => pointMove(ev, $el, range)" @touchmove.passive="(ev) => pointMove(ev.touches[0], $el, range)">
+                        <div class="timeline">
+                    
+                            <div class="mark written" :style="{width: ((work.date-range[0])/spread)*100+'%'}"
+                                :data-date="work.date > 0 ? work.date+'AD' : -work.date+'BC'"></div>
+
+                            <div class="mark mss-date-range"
+                                :style="{marginLeft: ((work.earliest.manuscript-range[0])/spread)*100+'%', width: ((work.range[1]-work.earliest.manuscript)/spread)*100+'%' }"
+                                :data-manuscript-info="work.quantity.manuscripts +' manuscripts'"></div>
+                            <div x-show="work.earliest.fragment" class="mark mss-date-range"
+                                :style="{marginLeft: ((work.earliest.fragment-range[0])/spread)*100+'%', width: ((work.range[1]-work.earliest.fragment)/spread)*100+'%' }"
+                                :data-fragment-info="work.quantity.fragments +' fragments'"></div>
+                    
+                            <div x-show="$store.centuryMarks.on">
+                                <template x-for="seg in spread/100">
+                                    <century-mark class="mark" :class="seg%10==0 ? 'century' : seg%5==0 ? 'half-century' : '' "
+                                        :style="{ width: seg/(spread/100)*100+'%' }">
+                                    </century-mark>
+                                </template>
+                            </div>
+                    
+                            <slide-indicator :data-date="pointerDate>0 ? pointerDate+'AD' : pointerDate==0 ? 'Year 0' : -pointerDate+'BC' "
+                                :style="pointer"></slide-indicator>
+                    
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
 
     </div>
 
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('centuryMarks', {
+                on: !(localStorage['centuryMarks'] == 'false'),
+                toggle() {
+                    localStorage['centuryMarks'] = !this.on
+                    this.on = !this.on
+                }
+            })
+            Alpine.data('pointController', (ev) => ({
+                pointerDate: '',
+                pointer: '',
+                pointMove(ev, el, range) {
+                    this.pointer = { width: (ev.clientX - el.offsetLeft) - 1 + 'px' };
+                    this.pointerDate = Math.ceil(((ev.clientX - el.offsetLeft) / el.clientWidth * spread + range[0]) / 5) * 5;
+                }
+            }))
+        })
+
+        function getTimeSpread(mss) {
+            const earliest = mss.reduce((a, b) => a.earliest['manuscript']-a.date > b.earliest['manuscript']-b.date ? a : b);
+            return earliest.earliest['manuscript']-earliest.date
+        }
+
+        function getCountSpread(mss) {
+            const greatest = mss.reduce((a,b) => a.quantity.manuscripts > b.quantity.manuscripts ? a : b);
+            return greatest.quantity.manuscripts + greatest.quantity.fragments
+        }
+    </script>
 </body>
 </html>

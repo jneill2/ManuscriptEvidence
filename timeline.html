@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <link rel="stylesheet" href="styles.css"/>
+    <script src="https://code.iconify.design/iconify-icon/1.0.1/iconify-icon.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="manuscripts.js"></script>
+</head>
+<body>
+
+    <div id="app" x-data="{manuscripts: window.manuscripts, range:[-1000, 2000], settings:false }">
+        <div>
+            <button @click.outside="settings=false" @click="settings = !settings">
+                <iconify-icon icon="ic:round-menu"></iconify-icon>
+            </button>
+            <div x-show="settings" x-cloak class="settings">
+                <button @click="$store.centuryMarks.toggle()" x-text="$store.centuryMarks.on ? 'toggle tick marks off' : 'toggle tick marks on' "></button>
+            </div>
+            
+            <button @click="manuscripts.reverse()">
+                <iconify-icon icon="ic:round-swap-vert"></iconify-icon>
+                <span>Reverse order</span>
+            </button>
+
+            <div style="float: right;">
+                <button @click="manuscripts.sort((a,b) => b.qty-a.qty)">
+                    <iconify-icon icon="ic:baseline-123"></iconify-icon>
+                    <span>By quantity</span>
+                </button>
+                <button @click="manuscripts.sort((a,b) => b.date-a.date)">
+                    <iconify-icon icon="ic:baseline-date-range"></iconify-icon>
+                    <span>By date</span>
+                </button>
+                <button @click="manuscripts.sort((a,b) => (a.earliest.manuscript-a.date)-(b.earliest.manuscript-b.date))">
+                    <iconify-icon icon="ic:round-access-time"></iconify-icon>
+                    <span>By 1st ms</span>
+                </button>
+            </div>
+
+        </div>
+        <hr>
+        <template x-for="work in manuscripts">
+            <div class="block">
+
+                <details>
+                    <summary>
+                        <h2 x-text="work.name"></h2>
+                    </summary>
+                    <ul>
+                        <li>Date of autograph: circa <span x-text="work.date > 0 ? work.date+'AD' : -work.date+'BC'"></span></li>
+                        <li x-show="work.earliest.fragment">Elapsed time between authorship and earliest fragment: <span x-text="work.earliest.fragment-work.date+' years'"></span></li>
+                        <li>Elapsed time between authorship and earliest manuscript: <span x-text="work.earliest.manuscript-work.date+' years'"></span></li>
+                    </ul>
+                    <p x-html="work.summary"></p>
+                </details>
+
+                <div class="graph" x-data="pointController" x-init="spread=range[1]-range[0]"
+                    @mousemove="(ev) => pointMove(ev, $el, range)"
+                    @touchmove.passive="(ev) => pointMove(ev.touches[0], $el, range)"
+                    >
+                    <!-- {
+                        pointer = {width:(ev.clientX-$el.offsetLeft)-1+'px'};
+                        pointerDate = Math.ceil(((ev.clientX-$el.offsetLeft)/$el.clientWidth*spread + range[0])/5)*5;
+                    } -->
+                    <div class="timeline">
+    
+                        <div class="mark written" 
+                            :style="{width: ((work.date-range[0])/spread)*100+'%'}"
+                            :data-date="work.date > 0 ? work.date+'AD' : -work.date+'BC'"
+                        ></div>
+    
+                        <!-- <div class="mark mss-date-range" 
+                            :style="{marginLeft: ((work.range[0]-range[0])/spread)*100+'%', width: ((work.range[1]-work.range[0])/spread)*100+'%' }"
+                            :data-note="work.qty +' manuscripts'" 
+                        ></div> -->
+                        <div class="mark mss-date-range" 
+                            :style="{marginLeft: ((work.earliest.manuscript-range[0])/spread)*100+'%', width: ((work.range[1]-work.earliest.manuscript)/spread)*100+'%' }"
+                            :data-manuscript-info="work.quantity.manuscripts +' manuscripts'" 
+                        ></div>
+                        <div x-show="work.earliest.fragment" class="mark mss-date-range" 
+                            :style="{marginLeft: ((work.earliest.fragment-range[0])/spread)*100+'%', width: ((work.range[1]-work.earliest.fragment)/spread)*100+'%' }"
+                            :data-fragment-info="work.quantity.fragments +' fragments'"
+                        ></div>
+    
+                        <div x-show="$store.centuryMarks.on">
+                            <template x-for="seg in spread/100">
+                                <century-mark class="mark" 
+                                    :class="seg%10==0 ? 'century' : seg%5==0 ? 'half-century' : '' " 
+                                    :style="{ width: seg/(spread/100)*100+'%' }">
+                                </century-mark>
+                            </template>
+                        </div>
+    
+                        <slide-indicator :data-date="pointerDate>0 ? pointerDate+'AD' : pointerDate==0 ? 'Year 0' : -pointerDate+'BC' " :style="pointer"></slide-indicator>
+    
+                    </div>
+                </div>
+
+            </div>
+        </template>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('centuryMarks', {
+                on: !(localStorage['centuryMarks']=='false'),
+                toggle() {
+                    localStorage['centuryMarks'] = !this.on
+                    this.on = !this.on
+                }
+            })
+            Alpine.data('pointController', (ev) => ({
+                pointerDate: '',
+                pointer: '',
+                pointMove(ev, el, range) {
+                    this.pointer = { width: (ev.clientX - el.offsetLeft) - 1 + 'px' };
+                    this.pointerDate = Math.ceil(((ev.clientX - el.offsetLeft) / el.clientWidth * spread + range[0]) / 5) * 5;
+                }
+            }))
+        })
+    </script>
+
+</body>
+</html>
