@@ -12,22 +12,22 @@
 
 <body>
 
-    <div id="app" x-data="{manuscripts: window.manuscripts, range:[-1000, 2000], settings:false}">
+    <div id="app" x-data="{order:'quantity', manuscripts: window.manuscripts, range:[-1000, 2000], settings:false}">
         <div>
             <button @click="manuscripts.reverse()">
                 <iconify-icon icon="ic:round-swap-vert"></iconify-icon>
                 <span>Reverse order</span>
             </button>
             <div style="float: right;">
-                <button @click="manuscripts.sort((a,b) => b.qty-a.qty)">
+                <button @click="order='quantity'; manuscripts.sort((a,b) => b.qty-a.qty)">
                     <iconify-icon icon="ic:baseline-123"></iconify-icon>
                     <span>By quantity</span>
                 </button>
-                <button @click="manuscripts.sort((a,b) => b.date-a.date)">
+                <button @click="order='date'; manuscripts.sort((a,b) => b.date-a.date)">
                     <iconify-icon icon="ic:baseline-date-range"></iconify-icon>
                     <span>By date</span>
                 </button>
-                <button @click="manuscripts.sort((a,b) => (a.earliest.manuscript-a.date)-(b.earliest.manuscript-b.date))">
+                <button @click="order='first'; manuscripts.sort((a,b) => (a.earliest.manuscript-a.date)-(b.earliest.manuscript-b.date))">
                     <iconify-icon icon="ic:round-access-time"></iconify-icon>
                     <span>By 1st ms</span>
                 </button>
@@ -40,9 +40,15 @@
             time_spread:getTimeSpread(manuscripts),
             count_spread:getCountSpread(manuscripts),
         }">
+            <div style="padding:10px">
+                <p x-show="order=='quantity'">Ordered by quantity of manuscripts. This does not include fragments and papyri.</p>
+                <p x-cloak x-show="order=='date'">Ordered by the approximate date of authorship.</p>
+                <p x-cloak x-show="order=='first'">Ordered by the time elapsed between the date of authorship and the fist manuscript. This does not include papyri fragments.</p>
+            </div>
+
             <template x-for="work in manuscripts">
                 <div class="block">
-                    <details style="font-size: small;">
+                    <details>
                         <summary>
                             <h2 x-text="work.name"></h2>
                         </summary>

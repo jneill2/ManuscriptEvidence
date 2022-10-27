@@ -12,29 +12,29 @@
 }
 .bar-graph {
     position: relative;
-    height: 50px;
+    height: 35px;
     margin: 10px 0px;
     div.bar {
         // background: lightgrey;
         margin: 20px 0px;
-        height: 10px;
+        height: 5px;
         position: absolute;
         // border-right: 1px solid black;
-        &:hover {
-            padding: 1px;
-            transition: padding 250ms ease-in-out;
-        }
+        // &:hover {
+        //     padding: 1px;
+        //     transition: padding 250ms ease-in-out;
+        // }
     }
     .first-manuscript {
         background: rgba(000, 000, 256, 0.5);
         &::after {
-            @include indicator-text($content: attr(data-note), $align:right, $placement: 15px 0px)
+            @include indicator-text($content: attr(data-note), $align:right, $placement: 10px 0px)
         }
     }
     .first-fragment {
         background: rgba(256, 000, 000, 0.5);
         &::after {
-            @include indicator-text($content: attr(data-note), $align:left, $placement: -15px 0px)
+            @include indicator-text($content: attr(data-note), $align:right, $placement: -15px 0px)
         }
     }
     .mss-count {
@@ -46,7 +46,7 @@
     .fragment-count {
         background: rgba(256, 000, 000, 0.5);
         &::after {
-            @include indicator-text($content: attr(data-note), $align: left, $placement: 15px 0px)
+            @include indicator-text($content: attr(data-note), $align: right, $placement: 10px 0px)
         }
     }
 }
