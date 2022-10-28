@@ -53,15 +53,16 @@ window.manuscripts = [
     },
     {
         name: 'Histories (Herodotus)',
-        summary: 'Histories by Herodotus was written between 480BC and 425BC. Extant manuscripts include 9 principal manuscripts and around <a target="_blank" href="https://papyri.info/search?AUTHOR=Herodotus&WORK=Historiae&DOCS_PER_PAGE=50">45 papyri</a>.',
-        date: -440,
+        summary: 'The Histories by Herodotus serves as a record of the ancient traditions, politics, geography around 430 BC when it was written. Around 60 manuscripts exist, the earliest of which dates to the 10th century. There are also 45 papyri fragments the earliest of which dates between from BC 332 - AD 640. The next earliest is from around BC 150 - AD 199.',
+        // summary: 'Histories by Herodotus was written between 480BC and 425BC. Extant manuscripts include 9 principal manuscripts and around <a target="_blank" href="https://papyri.info/search?AUTHOR=Herodotus&WORK=Historiae&DOCS_PER_PAGE=50">45 papyri</a>.',
+        date: -430,
         qty: 54, /* 27 */
         quantity: {
             fragments: 45,
             manuscripts: 60,
         },
         earliest: {
-            fragment: 50,
+            fragment: -330,
             manuscript: 900,
         },
         range: [50, 1350],
