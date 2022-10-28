@@ -52,22 +52,24 @@
                         <summary>
                             <h2 x-text="work.name"></h2>
                         </summary>
+                        <p x-html="work.summary"></p>
                         <ul>
                             <li>Date of autograph: circa <span x-text="work.date > 0 ? work.date+'AD' : -work.date+'BC'"></span></li>
-                            <li x-show="work.earliest.fragment">Elapsed time between authorship and earliest fragment: <span
-                                    x-text="work.earliest.fragment-work.date+' years'"></span></li>
+                            <li>Manuscript count: <span x-show="work.quantity.manuscripts" x-text="work.quantity.manuscripts"></span></li>
                             <li>Elapsed time between authorship and earliest manuscript: <span
                                     x-text="work.earliest.manuscript-work.date+' years'"></span></li>
+                            <li x-show="work.quantity.fragments">Fragment/papyri count: <span x-text="work.quantity.fragments"></span></li>
+                            <li x-show="work.earliest.fragment">Elapsed time between authorship and earliest fragment: <span
+                                    x-text="work.earliest.fragment-work.date+' years'"></span></li>
                         </ul>
-                        <p x-html="work.summary"></p>
                     </details>
-                    <div class="bar-graph">
-                        <div x-show="work.earliest.manuscript" class="bar first-manuscript" :data-note="work.earliest.manuscript-work.date + ' years until first manuscript'" :style="{width: (work.earliest.manuscript-work.date)/time_spread*100+'%'}"></div>
-                        <div x-show="work.earliest.fragment" class="bar first-fragment" :data-note="work.earliest.fragment-work.date + ' years until first fragment'" :style="{width: (work.earliest.fragment-work.date)/time_spread*100+'%'}"></div>
-                    </div>
                     <div class="bar-graph">
                         <div x-show="work.quantity.manuscripts" class="bar mss-count" :data-note="work.quantity.manuscripts + ' manuscripts'" :style="{width: (work.quantity.manuscripts)/count_spread*100+'%'}"></div>
                         <div x-show="work.quantity.fragments" class="bar fragment-count" :data-note="work.quantity.fragments + ' fragments'" :style="{width: (work.quantity.fragments)/count_spread*100+'%'}"></div>
+                    </div>
+                    <div class="bar-graph">
+                        <div x-show="work.earliest.manuscript" class="bar first-manuscript" :data-note="work.earliest.manuscript-work.date + ' years until first manuscript'" :style="{width: (work.earliest.manuscript-work.date)/time_spread*100+'%'}"></div>
+                        <div x-show="work.earliest.fragment" class="bar first-fragment" :data-note="work.earliest.fragment-work.date + ' years until first fragment'" :style="{width: (work.earliest.fragment-work.date)/time_spread*100+'%'}"></div>
                     </div>
                     <div class="graph" x-data="pointController" x-init="spread=range[1]-range[0]"
                         @mousemove="(ev) => pointMove(ev, $el, range)" @touchmove.passive="(ev) => pointMove(ev.touches[0], $el, range)">

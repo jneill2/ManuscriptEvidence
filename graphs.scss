@@ -40,13 +40,13 @@
     .mss-count {
         background: rgba(000, 000, 256, 0.5);
         &::after {
-            @include indicator-text($content: attr(data-note), $align: right, $placement: -15px 0px)
+            @include indicator-text($content: attr(data-note), $align: right, $placement: 10px 0px)
         }
     }
     .fragment-count {
         background: rgba(256, 000, 000, 0.5);
         &::after {
-            @include indicator-text($content: attr(data-note), $align: right, $placement: 10px 0px)
+            @include indicator-text($content: attr(data-note), $align: right, $placement:-15px 0px)
         }
     }
 }
