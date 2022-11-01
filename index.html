@@ -12,7 +12,7 @@
 
 <body>
 
-    <div id="app" x-data="{order:'quantity', manuscripts: window.manuscripts, range:[-1000, 2000], settings:false}">
+    <div id="app" x-data="{order:'first', manuscripts: window.manuscripts, range:[-1000, 2000], settings:false}">
         <div>
             <button @click="manuscripts.reverse()">
                 <iconify-icon icon="ic:round-swap-vert"></iconify-icon>
@@ -41,9 +41,9 @@
             count_spread:getCountSpread(manuscripts),
         }">
             <div style="padding:10px">
-                <p x-show="order=='quantity'">Ordered by quantity of manuscripts. This does not include fragments and papyri.</p>
+                <p x-show="order=='first'">Ordered by the time elapsed between the date of authorship and the fist manuscript. This does not include papyri fragments.</p>
+                <p x-cloak x-show="order=='quantity'">Ordered by quantity of manuscripts. This does not include fragments and papyri.</p>
                 <p x-cloak x-show="order=='date'">Ordered by the approximate date of authorship.</p>
-                <p x-cloak x-show="order=='first'">Ordered by the time elapsed between the date of authorship and the fist manuscript. This does not include papyri fragments.</p>
             </div>
 
             <template x-for="work in manuscripts">
